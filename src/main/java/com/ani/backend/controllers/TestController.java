@@ -21,7 +21,7 @@ public class TestController {
 
     @PostMapping()
     public boolean addUser(@RequestBody Test test) {
-        try{
+        try {
             testService.saveTest(test);
         } catch(Exception ex){
             return false;
