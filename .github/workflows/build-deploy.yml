@@ -14,10 +14,11 @@ jobs:
 
       - name: Replace placeholders in application.properties
         run: |
+          sed -i "s/\${SPRING_DATASOURCE_USERNAME}/$SPRING_DATASOURCE_USERNAME/g; \
+                  s/\${SPRING_DATASOURCE_PASSWORD}/$SPRING_DATASOURCE_PASSWORD/g" src/main/resources/application.properties
+        env:
           SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          sed -i "s/\\${SPRING_DATASOURCE_USERNAME}/$SPRING_DATASOURCE_USERNAME/g" src/main/resources/application.properties
           SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-          sed -i "s/\\${SPRING_DATASOURCE_PASSWORD}/$SPRING_DATASOURCE_PASSWORD/g" src/main/resources/application.properties
 
       - name: Build with Maven
         run: /opt/apache-maven-3.9.6/bin/mvn clean package -DskipTests
