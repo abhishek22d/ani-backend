@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Kill the already running application
         run: |
-          PID=$(lsof -t -i:8080 2>/dev/null)
+          PID=$(lsof -t -i:8080 2>/dev/null) || true
           if [ -n "$PID" ]; then
           echo "Killing process $PID"
           kill $PID
