@@ -34,6 +34,7 @@ jobs:
           kill $PID
           else
           echo "Process not running"
+          exit 0
           fi
 
   run:
