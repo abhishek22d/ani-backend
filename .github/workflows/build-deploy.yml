@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-run:
+  build:
     runs-on: self-hosted
     steps:
       - name: Checkout code
@@ -22,5 +22,16 @@ jobs:
       - name: Build with Maven
         run: /opt/apache-maven-3.9.6/bin/mvn clean package -DskipTests
 
+  kill:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Kill the already running application
+        run: kill $(lsof -t -i:8080)
+
+  run:
+    runs-on: self-hosted
+    needs: kill
+    steps:
       - name: Run the jar
-        run: java -jar ./target/backend-0.0.1-SNAPSHOT.jar
+        run: nohup java -jar ./target/backend-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
