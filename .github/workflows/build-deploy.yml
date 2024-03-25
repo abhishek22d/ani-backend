@@ -41,15 +41,14 @@ jobs:
     runs-on: self-hosted
     needs: kill
     steps:
-      - name: Create outputfile
+      - name: Run the executable file
         run: |
-          touch ./output.log
-          chmod 666 ./output.log
-          chmod 777 ./target/backend-0.0.1-SNAPSHOT.jar
+          chmod 777 ./scripts/run.sh
+          bash ./scripts/run.sh
 
-      - name: Run the jar
-        run: |
-          nohup java -jar ./target/backend-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
-          echo $!
-          sleep 30
+#      - name: Run the jar
+#        run: |
+#          nohup java -jar ./target/backend-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
+#          echo $!
+#          sleep 30
           
