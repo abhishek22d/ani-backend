@@ -22,20 +22,20 @@ jobs:
       - name: Build with Maven
         run: /opt/apache-maven-3.9.6/bin/mvn clean package -DskipTests
 
-  kill:
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - name: Kill the already running application
-        run: |
-          PID=$(lsof -t -i:8080 2>/dev/null) || true
-          if [ -n "$PID" ]; then
-          echo "Killing process $PID"
-          kill $PID
-          else
-          echo "Process not running"
-          exit 0
-          fi
+#  kill:
+#    runs-on: self-hosted
+#    needs: build
+#    steps:
+#      - name: Kill the already running application
+#        run: |
+#          PID=$(lsof -t -i:8080 2>/dev/null) || true
+#          if [ -n "$PID" ]; then
+#          echo "Killing process $PID"
+#          kill $PID
+#          else
+#          echo "Process not running"
+#          exit 0
+#          fi
   run:
     runs-on: ubuntu-latest
     needs: kill
