@@ -38,7 +38,7 @@ jobs:
 #          fi
   run:
     runs-on: ubuntu-latest
-    needs: kill
+    needs: build
     steps:
       - name: SSH to EC2 and start Java program
         uses: appleboy/ssh-action@master
