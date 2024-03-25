@@ -41,5 +41,9 @@ jobs:
     runs-on: self-hosted
     needs: kill
     steps:
+      - name: Create outputfile
+        run: |
+          touch ./output.log
+          chmod 666 ./output.log
       - name: Run the jar
         run: nohup java -jar ./target/backend-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
