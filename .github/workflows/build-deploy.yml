@@ -48,4 +48,8 @@ jobs:
           chmod 777 ./target/backend-0.0.1-SNAPSHOT.jar
 
       - name: Run the jar
-        run: java -jar ./target/backend-0.0.1-SNAPSHOT.jar
+        run: |
+          nohup java -jar ./target/backend-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
+          echo $!
+          sleep 30
+          
