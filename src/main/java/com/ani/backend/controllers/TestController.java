@@ -1,8 +1,10 @@
 package com.ani.backend.controllers;
 
 import com.ani.backend.dao.Test;
+import com.ani.backend.response.ServiceResponse;
 import com.ani.backend.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +22,17 @@ public class TestController {
     }
 
     @PostMapping()
-    public boolean addUser(@RequestBody Test test) {
+    public ServiceResponse<Boolean> addTest(@RequestBody Test test) {
         try {
             testService.saveTest(test);
         } catch(Exception ex){
-            return false;
+            return ServiceResponse.<Boolean>builder()
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .error(HttpStatus.INTERNAL_SERVER_ERROR.name()).build();
         }
-        return true;
+        return ServiceResponse.<Boolean>builder()
+                .status(HttpStatus.OK.value())
+                .payload(true)
+                .message("Success").build();
     }
 }
