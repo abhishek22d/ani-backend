@@ -8,3 +8,5 @@
 - Go to /home/ec2-user and run the command
 ``java -jar backend-0.0.1-SNAPSHOT.jar``
 - Check by accessing the http://<public-ip-address>:8080/actuator/health
+
+Swagger Link - http://ec2-54-163-201-84.compute-1.amazonaws.com:8080/swagger-ui/index.html#/
