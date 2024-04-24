@@ -2,12 +2,14 @@ package com.ani.backend.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "building")
 public class Building {
 
+    @Id
     @Column(name = "building_id")
     private int buildingId;
 

@@ -2,6 +2,7 @@ package com.ani.backend.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "property_review")
 public class PropertyReview {
 
+    @Id
     @Column(name = "property_review_id")
     private int propertyReviewId;
 

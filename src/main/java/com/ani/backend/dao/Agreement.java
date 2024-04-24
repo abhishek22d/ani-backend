@@ -2,6 +2,7 @@ package com.ani.backend.dao;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Table(name = "agreement")
 public class Agreement {
 
+    @Id
     @Column(name = "agreement_id")
     private int agreementId;
 
