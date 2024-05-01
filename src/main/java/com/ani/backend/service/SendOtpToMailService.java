@@ -3,50 +3,39 @@ package com.ani.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Random;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
-@RestController
+import java.security.SecureRandom;
+@Service
 public class SendOtpToMailService {
-
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @PostMapping("/send-otp")
-    public String sendOTP(@RequestBody String email) {
-        // Generate OTP
-        String otp = generateOTP();
+    public void sendOtpService(String email) {
+        String otp = generateOtp();
 
-        // Send email with OTP
         try {
-            sendEmail(email, otp);
-            return "OTP sent successfully!";
-        } catch (MessagingException e) {
-            return "Failed to send OTP. Please try again later.";
+            sendOtpToMail(email, otp);
+        }catch (MessagingException e){
+            throw new RuntimeException("Unable to send otp.");
         }
+
     }
 
-    private String generateOTP() {
-        // Generate a random 6-digit OTP
-        Random random = new Random();
-        int otp = 100000 + random.nextInt(900000);
+    private String generateOtp() {
+
+        SecureRandom random = new SecureRandom();
+        int otp = 100000 + random.nextInt(9000000);
         return String.valueOf(otp);
     }
-
-    private void sendEmail(String email, String otp) throws MessagingException {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setTo(email);
-        helper.setSubject("Your OTP for verification");
-        helper.setText("Your OTP is: " + otp);
-        javaMailSender.send(message);
+    private void sendOtpToMail(String email,String otp) throws MessagingException{
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+        mimeMessageHelper.setTo(email);
+        mimeMessageHelper.setSubject("your otp is :");
+        mimeMessageHelper.setText(otp);
+        javaMailSender.send(mimeMessage);
     }
 }
-
-
