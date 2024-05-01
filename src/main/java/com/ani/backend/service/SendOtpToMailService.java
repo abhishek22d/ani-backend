@@ -1,12 +1,12 @@
 package com.ani.backend.service;
 
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.security.SecureRandom;
 @Service
 public class SendOtpToMailService {
@@ -18,7 +18,7 @@ public class SendOtpToMailService {
 
         try {
             sendOtpToMail(email, otp);
-        }catch (MessagingException e){
+        }catch (MessagingException | jakarta.mail.MessagingException e){
             throw new RuntimeException("Unable to send otp.");
         }
 
@@ -30,7 +30,7 @@ public class SendOtpToMailService {
         int otp = 100000 + random.nextInt(9000000);
         return String.valueOf(otp);
     }
-    private void sendOtpToMail(String email,String otp) throws MessagingException{
+    private void sendOtpToMail(String email,String otp) throws MessagingException, jakarta.mail.MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
         mimeMessageHelper.setTo(email);
