@@ -1,5 +1,6 @@
 package com.ani.backend.service;
 
+import com.ani.backend.repositories.UserLoginRepository;
 import com.ani.backend.response.ServiceResponse;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -10,6 +11,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Service
 public class SendOtpToMailService {
@@ -17,15 +20,28 @@ public class SendOtpToMailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Autowired
+    private UserLoginRepository userLoginRepository;
+
     public ServiceResponse<Boolean> sendOtpService(String email) {
         String otp = generateOtp();
         try {
             sendOtpToMail(email, otp);
+            boolean isSaved = userLoginRepository.saveOtp(email, otp, Timestamp.valueOf(LocalDateTime.now()));
+
+            if(!isSaved){
+                throw new Exception("Otp save failed");
+            }
+
         }catch (MessagingException e){
             return ServiceResponse.<Boolean>builder()
                     .status(HttpStatus.OK.value()).payload(false).message("OTP Sent Failed :"+ e.getMessage()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ServiceResponse.<Boolean>builder()
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value()).payload(false).message("Failed to save OTP for email :" + email ).build();
         }
-       return ServiceResponse.<Boolean>builder()
+        return ServiceResponse.<Boolean>builder()
                 .status(HttpStatus.OK.value()).payload(true).message("OTP Successfully Sent for " + email ).build();
     }
 
